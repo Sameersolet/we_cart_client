@@ -1,23 +1,22 @@
-
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import './App.css';
-import Header from './components/Header';
-import Products from './components/Products';
-import Checkout from './components/Checkout';
-import Cart from './components/Cart';
-import Register from './components/Register';
-import LoginPage from './components/LoginPage';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { userData, logout } from './redux/userslice';
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import "./App.css";
+import Header from "./components/Header";
+import Products from "./components/Products";
+import Checkout from "./components/Checkout";
+import Cart from "./components/Cart";
+import Register from "./components/Register";
+import LoginPage from "./components/LoginPage";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { userData, logout } from "./redux/userslice";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     if (!token) {
       dispatch(logout());
@@ -26,12 +25,18 @@ function App() {
 
     const getUser = async () => {
       try {
-        const res = await axios.get('http://localhost:1300/api/user', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await axios.get(
+          "https://we-cart-server-iych.onrender.com/api/user",
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
         dispatch(userData(res.data.user));
       } catch (err) {
-        console.log('User authentication failed:', err.response?.data || err.message);
+        console.log(
+          "User authentication failed:",
+          err.response?.data || err.message,
+        );
         dispatch(logout());
-        navigate('/login');
+        navigate("/login");
       }
     };
 
